@@ -1,9 +1,9 @@
 import User from "../models/user.model.js";
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcryptjs";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-
+import getJwtToken from "../utils/getJwtToken.js";
 dotenv.config();
 
 const jwt_key = process.env.JWT_KEY;
@@ -25,12 +25,12 @@ export const signup = async (req, res) => {
   const profilePic = gender === "male" ? malePic : femalePic;
 
   const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(password,salt);
+  const hashPassword = await bcrypt.hash(password, salt);
   let userData = {
     firstName,
     lastName,
     email,
-    password:hashPassword,
+    password: hashPassword,
     gender,
   };
 
@@ -52,33 +52,51 @@ export const signup = async (req, res) => {
   const user = await User.create(userData);
   console.log(user);
   const userId = user._id;
-  const token = jwt.sign({ userId }, jwt_key);
+  getJwtToken(userId,jwt_key,res);
 
   if (user) {
     await user.save();
-   res.status(200).json({
+    res.status(200).json({
       msg: "User created successfully",
-      token: token,
     });
   }
 };
 
 const userLoginInput = z.object({
-    email:z.string(),
-    password:z.string()
-})
+  email: z.string(),
+  password: z.string(),
+});
 
-export const signin = (req, res) => {
+export const signin = async (req, res) => {
   const { email, password } = req.body;
-  const inputCheck = userLoginInput.safeParse({email,password});
+  const inputCheck = userLoginInput.safeParse({ email, password });
 
-  if(!inputCheck.success){
+  if (!inputCheck.success) {
     return res.status(400).json({
-        msg:"Sign in Input is wrong"
-    })
+      msg: "Sign in Input is wrong",
+    });
   }
+  const user = await User.findOne({ email });
+  const isCorrectPassword = await bcrypt.compare(
+    password,
+    user?.password || ""
+  );
 
-
-
+  if (user && isCorrectPassword) {
+    const userId = user._id;
+    getJwtToken(userId,jwt_key,res);
+    return res.status(200).json({
+      msg: "Signin successfull",
+    });
+  } else {
+    return res.status(400).json({
+      msg: "User not found",
+    });
+  }
 };
-export const signout = (req, res) => {};
+export const signout = (req, res) => {
+    res.cookie("jwt","",{maxAge:0})
+    res.status(200).json({
+      msg:"Signout sucessfull"
+    })
+};
