@@ -1,9 +1,18 @@
-import React from 'react'
-
+import React from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { SignUp, Login, Home } from "./pages/index.js";
 const App = () => {
-  return <div className='w-full bg-black'>
+  return (
+    <div className="w-full min-h-screen bg-cyan-500 ">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+};
 
-  </div>
-}
-
-export default App
+export default App;
