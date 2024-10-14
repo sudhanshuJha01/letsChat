@@ -4,9 +4,11 @@ import rootRouter from './router/index.js'
 import connectDB from './db/index.js';
 import cookieParser from 'cookie-parser';
 dotenv.config();
+import cors from 'cors';
 
 const port = process.env.PORT || 5000
 const app = express();
+app.use(cors({ origin: '*' }));
 
 app.use(express.json());
 app.use(cookieParser())
