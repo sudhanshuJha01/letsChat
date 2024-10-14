@@ -1,10 +1,11 @@
-import React from 'react'
-import {Search} from 'react-icons'
+import SideBarInput from './SideBarInput.jsx'
+import { IoSearchCircle } from "react-icons/io5";
+
 const SideBar = () => {
   return (
-    <div>
+    <div className='flex items-center '>
         <SideBarInput/>
-
+        <IoSearchCircle/>
     </div>
   )
 }

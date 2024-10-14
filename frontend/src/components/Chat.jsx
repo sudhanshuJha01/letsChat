@@ -1,11 +1,11 @@
-import React from "react";
+import {SideBar , Conversation} from '../components/index.js'
 
 const Chat = ({chatData , profilePic , }) => {
   return (
-<>
+<div className=' h-screen text-black flex justify-center items-center'>
 <SideBar/>
 <Conversation/>
-</>
+</div>
   );
 };
 
