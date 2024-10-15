@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { SignUp, Login, Home } from "./pages/index.js";
 const App = () => {
   return (
-    <div className="w-full min-h-screen bg-cyan-500 ">
+    <div className=" bg-cyan-500 ">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

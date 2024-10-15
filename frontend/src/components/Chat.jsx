@@ -1,11 +1,11 @@
-import {SideBar , Conversation} from '../components/index.js'
+import { SideBar, Messages } from "../components/index.js";
 
-const Chat = ({chatData , profilePic , }) => {
+const Chat = () => {
   return (
-<div className=' h-screen text-black flex justify-center items-center'>
-<SideBar/>
-<Conversation/>
-</div>
+    <div className=" text-black flex h-screen gap-1.5">
+      <SideBar  />
+      <Messages className="max-lg:hidden" />
+    </div>
   );
 };
 
